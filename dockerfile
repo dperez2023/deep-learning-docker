@@ -1,17 +1,13 @@
-# Use an official Python runtime as a base image
 FROM python:3.8
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Clone or copy the ultralytics library into your container
 RUN git clone https://github.com/ultralytics/yolov5.git /app/ultralytics
 
-# Copy the rest of your project files
 COPY . /app
 
-# Install other dependencies
 RUN pip install -r requirements.txt
+RUN pip install ultralytics
 
-# Specify the command to run your application
-CMD ["python", "main.py"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

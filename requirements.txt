@@ -3,4 +3,4 @@ uvicorn
 torch
 opencv-python-headless
 python-multipart
-ultralytics==8.0.230
+ultralytics==8.0.227

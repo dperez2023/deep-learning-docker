@@ -5,8 +5,8 @@ from fastapi.responses import FileResponse
 app = FastAPI()
 
 
-@app.get("/", summary="Endpoint that GET an image file and returns it with the identified image with YOLO model's "
-                      "best parameters combination")
+@app.post("/", summary="Endpoint that GET an image file and returns it with the identified image with YOLO model's "
+                       "best parameters combination")
 async def test(file: UploadFile, epoch: int = 200, batch: int = 64, weight_decay: float = 0.001):
     error = {}
     if epoch != 100 and epoch != 150 and epoch != 200:
