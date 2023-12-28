@@ -3,6 +3,7 @@ RUN apt-get update && apt-get install -y libgl1-mesa-glx
 
 WORKDIR /app
 
+RUN git clone https://github.com/dperez2023/deep-learning-docker .
 RUN git clone https://github.com/ultralytics/yolov5.git /app/ultralytics
 
 COPY . /app

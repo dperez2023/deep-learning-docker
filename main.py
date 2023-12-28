@@ -2,8 +2,7 @@ from ultralytics import YOLO
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
 
-app = FastAPI()
-
+app = FastAPI(debug=True)
 
 @app.post("/", summary="Endpoint that GET an image file and returns it with the identified image with YOLO model's "
                        "best parameters combination")
@@ -19,7 +18,7 @@ async def test(file: UploadFile, epoch: int = 200, batch: int = 64, weight_decay
         return error
 
     path_model = "models\e" + str(epoch) + "b" + str(batch) + "w" + str(weight_decay)[2:] + ".pt"
-    file_path = f"files/{file.filename}"
+    file_path = f"{file.filename}"
     with open(file_path, "wb") as f:
         f.write(file.file.read())
     model = YOLO(path_model)
