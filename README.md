@@ -20,14 +20,14 @@ Note: Docker Daemon must be running (Ex. Docker Desktop)
 
 1. Clone the repository
 
-3. Within the folder, execute the following:
+2. Within the folder, execute the following:
 
-  3.1. Build:
+  2.1. Build:
   docker build -t group03_api_image .
   
-  3.2. Run:
+  2.2. Run:
   docker run -d -p 80:80 group03_api_image
   
-  3.3. Use an image File (JPG) via cURL to test response
+  2.3. Use an image File (JPG) via cURL to test response
   curl -X POST -H "Content-Type: multipart/form-data" -F "file=@path/to/image/image.jpg" -F "epoch=200" -F "batch=64" -F "weight_decay=0.001" http://localhost:80/ --output -
 
