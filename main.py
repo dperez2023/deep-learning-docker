@@ -17,7 +17,7 @@ async def test(file: UploadFile, epoch: int = 200, batch: int = 64, weight_decay
     if error:
         return error
 
-    path_model = "models\e" + str(epoch) + "b" + str(batch) + "w" + str(weight_decay)[2:] + ".pt"
+    path_model = "models/e" + str(epoch) + "b" + str(batch) + "w" + str(weight_decay)[2:] + ".pt"
     file_path = f"{file.filename}"
     with open(file_path, "wb") as f:
         f.write(file.file.read())
