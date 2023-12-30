@@ -1,14 +1,11 @@
-FROM python:3.8
-RUN apt-get update && apt-get install -y libgl1-mesa-glx
-
+FROM ultralytics/ultralytics:latest
 WORKDIR /app
 
-RUN git clone https://github.com/dperez2023/deep-learning-docker .
-RUN git clone https://github.com/ultralytics/yolov5.git /app/ultralytics
+COPY requirements.txt .
+RUN pip install -r /app/requirements.txt
 
-COPY . /app
+COPY . .
 
-RUN pip install -r requirements.txt
-RUN pip install ultralytics
+EXPOSE 80
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
+ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]

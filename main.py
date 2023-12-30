@@ -1,30 +1,44 @@
 from ultralytics import YOLO
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import FileResponse
+from PIL import Image
+import shutil
+import os
 
 app = FastAPI(debug=True)
 
-@app.post("/", summary="Endpoint that GET an image file and returns it with the identified image with YOLO model's "
+@app.get("/ping", summary="Ping endpoint to test connection")
+def _ping():
+    return "pong"
+
+@app.post("/predict", summary="Endpoint that GET an image file and returns it with the identified image with YOLO model's "
                        "best parameters combination")
-async def test(file: UploadFile, epoch: int = 200, batch: int = 64, weight_decay: float = 0.001):
+async def _test(file: UploadFile, epoch: int = 200, batch: int = 64, weight_decay: float = 0.001):
     error = {}
-    if epoch != 100 and epoch != 150 and epoch != 200:
-        error["Error epoch"] = "Invalid value: {}, choose between 100, 150 or 200".format(epoch)
-    if batch != 16 and batch != 32 and batch != 64:
-        error["Error batch"] = "Invalid value: {}, choose between 16, 32 or 64".format(batch)
-    if weight_decay != 0.01 and weight_decay != 0.001 and weight_decay != 0.005:
-        error["Error weight_decay"] = "Invalid value: {}, choose between 0.01, 0.001 or 0.005".format(weight_decay)
+    if not epoch in [100, 150, 200]:
+        error["Error epoch"] = f"Invalid value: {epoch}, choose between 100, 150 or 200"
+    if not batch in [16, 32, 64]: 
+        error["Error batch"] = f"Invalid value: {batch}, choose between 16, 32 or 64"
+    if not weight_decay in [0.01, 0.001, 0.0005]:
+        error["Error weight_decay"] = f"Invalid value: {weight_decay}, choose between 0.01, 0.001 or 0.005"
+    
     if error:
         return error
 
-    path_model = "models/e" + str(epoch) + "b" + str(batch) + "w" + str(weight_decay)[2:] + ".pt"
-    file_path = f"{file.filename}"
-    with open(file_path, "wb") as f:
-        f.write(file.file.read())
+    os.makedirs("files/results", exist_ok=True)
+    save_path = f"files/results/{file.filename}"
+    with open(save_path, "wb") as saved_image:
+        shutil.copyfileobj(file.file, saved_image)
+
+    path_model =f"models/e{epoch}b{batch}w{str(weight_decay)[2:]}.pt"
     model = YOLO(path_model)
+    results = model(save_path)
 
-    results = model(f"files/{file.filename}", save=True, line_width=2, project="files", name="results", exist_ok=True)
+    if results:
+        annotated_image = results[0].plot() # We accept just 1 image
+        im = Image.fromarray(annotated_image[..., ::-1])
+        im.save(save_path)
+        
+    response_headers = {"epoch": str(epoch), "batch": str(batch), "weight_decay": str(weight_decay), "model": path_model}
 
-    item = {"epoch": str(epoch), "batch": str(batch), "weight_decay": str(weight_decay), "model": path_model}
-
-    return FileResponse(f"files/results/{file.filename}", headers=item)
+    return FileResponse(save_path, headers=response_headers)
