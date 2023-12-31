@@ -1,6 +1,3 @@
-fastapi
-uvicorn
-torch
-opencv-python-headless
-python-multipart
-ultralytics==8.0.227
+fastapi==0.108.0
+uvicorn==0.25.0
+python-multipart==0.0.6

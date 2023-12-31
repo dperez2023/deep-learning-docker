@@ -1,20 +1,22 @@
-### YOLO Accuracy:
+### YOLO Accuracy
 
-By default, the best accuracy combination is selected:
-epoch: 200
-batch: 64
-weight: 0.001
+By default, the best accuracy combination is selected:  
+- Epoch: **200**
+- Batch: **64**
+- Weight: **0.001**
 
 However, it can be combined in several ways with the following values:
 
-Epoch: 100, 150, 200
-Batch: 16, 32, 64
-Weight: 0.01, 0.001, 0.005
+- Epoch: **100, 150, 200**
+- Batch: **16, 32, 64**
+- Weight: **0.01, 0.001, 0.005**
 
-### Demo images:
+---
+### Demo images
 Within the repository in 'files' folder there are examples ready to use.
 
-### Docker steps:
+---
+### Docker steps
 
 Note: Docker Daemon must be running (Ex. Docker Desktop)
 
@@ -22,12 +24,28 @@ Note: Docker Daemon must be running (Ex. Docker Desktop)
 
 2. Within the folder, execute the following:
 
-  2.1. Build:
-  docker build -t group03_api_image .
+```bash
+# Run
+make run
+
+# Build (optional)
+make build
+
+# Push to DockerHub (optional)
+make push
+
+# Delete current container (optional)
+make delete
+```
   
-  2.2. Run:
-  docker run -d -p 80:80 group03_api_image
+  3. Use an image File (JPG) via cURL to test response
+
+  ```bash
+  # Test connection
+  curl -X GET http://localhost:80/ping
+
+  # Make a predict
+  curl -X POST -H "Content-Type: multipart/form-data" -F "file=@path/to/image/image.jpg" -F "epoch=200" -F "batch=64" -F "weight_decay=0.001" http://localhost:80/predict --output -
+  ```
   
-  2.3. Use an image File (JPG) via cURL to test response
-  curl -X POST -H "Content-Type: multipart/form-data" -F "file=@path/to/image/image.jpg" -F "epoch=200" -F "batch=64" -F "weight_decay=0.001" http://localhost:80/ --output -
 
