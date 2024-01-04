@@ -45,7 +45,14 @@ make delete
   curl -X GET http://localhost:80/ping
 
   # Make a predict
-  curl -X POST -H "Content-Type: multipart/form-data" -F "file=@path/to/image/image.jpg" -F "epoch=200" -F "batch=64" -F "weight_decay=0.001" http://localhost:80/predict --output -
+  curl -X POST \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@path/to/image.jpg" \
+  -F "epoch=200" \
+  -F "batch=64" \
+  -F "weight_decay=0.001" \
+  http://localhost:80/predict \
+  --output path/to/image-results.jpg
   ```
   
 
