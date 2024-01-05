@@ -39,7 +39,7 @@ make build
   # Test connection
   curl -X GET http://localhost:80/ping
 
-  # Make a predict (Global Wheat Dataset)
+  # Make a predict (Global Wheat Dataset https://www.global-wheat.com)
   curl -X POST \
   -H "Content-Type: multipart/form-data" \
   -F "file=@path/to/image.jpg" \
