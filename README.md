@@ -1,4 +1,4 @@
-### YOLO Accuracy
+### YOLO Accuracy with Global WHEAT Dataset (Wheat prediction in an image)
 
 By default, the best accuracy combination is selected:  
 - Epoch: **200**
@@ -31,11 +31,6 @@ make run
 # Build (optional)
 make build
 
-# Push to DockerHub (optional)
-make push
-
-# Delete current container (optional)
-make delete
 ```
   
   3. Use an image File (JPG) via cURL to test response
@@ -44,7 +39,7 @@ make delete
   # Test connection
   curl -X GET http://localhost:80/ping
 
-  # Make a predict
+  # Make a predict (Global Wheat Dataset)
   curl -X POST \
   -H "Content-Type: multipart/form-data" \
   -F "file=@path/to/image.jpg" \
