@@ -25,11 +25,12 @@ Note: Docker Daemon must be running (Ex. Docker Desktop)
 2. Within the folder, execute the following:
 
 ```bash
-# Run
-make run
 
 # Build (optional)
 make build
+
+# Run
+make run
 
 ```
   
